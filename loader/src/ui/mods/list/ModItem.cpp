@@ -773,9 +773,9 @@ void ModItem::onViewError(CCObject*) {
                 case LoadProblem::Type::UnsupportedVersion: {
                     issue = fmt::format("<cy>{}</c>", problem->message);
                     howToFix = "wait for the developer(s) to <cj>release an update to "
-                        "the mod</c> that supports the newer version. While you"
-                        "wait for this hypothetical update, please <c>do not harass</c>"
-                        "the developer(s) to update the mod; they are humans just like you.";
+                        "the mod</c> that supports the newer version. While you wait for "
+                        "this hypothetical update, please <c>do not harass the developer(s)</c> "
+                        "to update the mod; they are humans just like you. Exercise patience.";
                 } break;
 
                 case LoadProblem::Type::NeedsNewerGeodeVersion: {
