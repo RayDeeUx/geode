@@ -1191,6 +1191,7 @@ void ModPopup::onSettings(CCObject*) {
 }
 
 void ModPopup::onLink(CCObject* sender) {
+    // whoever wrote ModPopup::init needs to be shot in an alleyway because the list initalizer is so restrictive it's not even funny at this point --ery
     if (static_cast<CCNode*>(sender)->getID() == "discord") {
         ModPopup::onCommunity(sender);
         return;
@@ -1219,7 +1220,7 @@ void ModPopup::onCommunity(CCObject* sender) {
         "Continue", "Stay", 350.f, [this, url](auto, bool btn2) {
             if (btn2) return;
             web::openLinkInBrowser(url);
-        }, true, false
+        }, true, true
     );
 }
 void ModPopup::onModtober24Info(CCObject*) {
