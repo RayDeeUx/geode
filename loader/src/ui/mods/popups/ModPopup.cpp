@@ -1218,7 +1218,7 @@ void ModPopup::onCommunity(CCObject* sender) {
             web::openLinkInBrowser(url);
         }, true, false
     );
-}``
+}
 void ModPopup::onModtober24Info(CCObject*) {
     FLAlertLayer::create(
         "Modtober 2024",
