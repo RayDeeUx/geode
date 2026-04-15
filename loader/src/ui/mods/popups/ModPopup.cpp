@@ -547,7 +547,7 @@ bool ModPopup::init(ModSource&& src) {
     >> {
         { "homepage", "homepage.png"_spr, m_source.getMetadata().getLinks().getHomepageURL(), nullptr },
         { "github", useGithubIcon ? "github.png"_spr : "source_generic.png"_spr, m_source.getMetadata().getLinks().getSourceURL(), nullptr },
-        { "discord", "gj_discordIcon_001.png", m_source.getMetadata().getLinks().getCommunityURL(), nullptr },
+        { "discord", "gj_discordIcon_001.png", m_source.getMetadata().getLinks().getCommunityURL(), menu_selector(ModPopup::onCommunity) },
         { "support", "gift.png"_spr, m_source.getMetadata().getSupportInfo(), menu_selector(ModPopup::onSupport) },
     }) {
         auto spr = CCSprite::createWithSpriteFrameName(std::get<1>(stat));
@@ -1197,6 +1197,28 @@ void ModPopup::onLink(CCObject* sender) {
 
 void ModPopup::onSupport(CCObject*) {
     openSupportPopup(m_source.getMetadata());
+}
+void ModPopup::onCommunity(CCObject* sender) {
+    auto url = static_cast<CCString*>(static_cast<CCNode*>(sender)->getUserObject("url"));
+    if (m_source.asMod()->isInternal()) {
+        web::openLinkInBrowser(url->getCString());
+        return;
+    }
+    createQuickPopup(
+        "Joining External Community",
+        fmt::format(
+            "You are about to join <cl>{}</c>, an external community not affiliated "
+            "with the Geode Team. The Geode Team is not responsible for the contents, "
+            "rules, or moderation in this server. <co>Any bans, timeouts, or other forms </c>"
+            "<co>of moderation you may experience in this community does not represent the </c>"
+            "<co>thoughts/opinions of the Geode Team in any capacity.</c>",
+            url->getCString()
+        ),
+        "Yes", "No", 350.f, [earl = geode::Ref(url)](auto, bool btn2) {
+            if (btn2) return;
+            web::openLinkInBrowser(earl->getCString());
+        }, true, false
+    );
 }
 void ModPopup::onModtober24Info(CCObject*) {
     FLAlertLayer::create(
