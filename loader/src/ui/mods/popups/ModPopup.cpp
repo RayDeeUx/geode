@@ -547,7 +547,7 @@ bool ModPopup::init(ModSource&& src) {
     >> {
         { "homepage", "homepage.png"_spr, m_source.getMetadata().getLinks().getHomepageURL(), nullptr },
         { "github", useGithubIcon ? "github.png"_spr : "source_generic.png"_spr, m_source.getMetadata().getLinks().getSourceURL(), nullptr },
-        { "discord", "gj_discordIcon_001.png", m_source.getMetadata().getLinks().getCommunityURL(), menu_selector(ModPopup::onCommunity) },
+        { "discord", "gj_discordIcon_001.png", m_source.getMetadata().getLinks().getCommunityURL(), nullptr },
         { "support", "gift.png"_spr, m_source.getMetadata().getSupportInfo(), menu_selector(ModPopup::onSupport) },
     }) {
         auto spr = CCSprite::createWithSpriteFrameName(std::get<1>(stat));
@@ -1191,6 +1191,10 @@ void ModPopup::onSettings(CCObject*) {
 }
 
 void ModPopup::onLink(CCObject* sender) {
+    if (static_cast<CCNode*>(sender)->getID() == "discord") {
+        ModPopup::onCommunity(sender);
+        return;
+    }
     auto url = static_cast<CCString*>(static_cast<CCNode*>(sender)->getUserObject("url"));
     web::openLinkInBrowser(url->getCString());
 }
