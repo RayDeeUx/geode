@@ -1212,7 +1212,7 @@ void ModPopup::onCommunity(CCObject* sender) {
             "<co>do not reflect values held by the Geode Team.</c>",
             url->getCString()
         ),
-        "Continue", "Stay", 350.f, [earl = url->getCString()](auto, bool btn2) {
+        "Continue", "Stay", 350.f, [this, earl = url->getCString()](auto, bool btn2) {
             if (btn2) return;
             web::openLinkInBrowser(earl);
         }, true, false
