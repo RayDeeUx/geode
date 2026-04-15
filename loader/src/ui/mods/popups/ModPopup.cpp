@@ -547,7 +547,7 @@ bool ModPopup::init(ModSource&& src) {
     >> {
         { "homepage", "homepage.png"_spr, m_source.getMetadata().getLinks().getHomepageURL(), nullptr },
         { "github", useGithubIcon ? "github.png"_spr : "source_generic.png"_spr, m_source.getMetadata().getLinks().getSourceURL(), nullptr },
-        { "discord", "gj_discordIcon_001.png", m_source.getMetadata().getLinks().getCommunityURL(), nullptr },
+        { "discord", "gj_discordIcon_001.png", m_source.getMetadata().getLinks().getCommunityURL(), menu_selector(ModPopup::onCommunity) },
         { "support", "gift.png"_spr, m_source.getMetadata().getSupportInfo(), menu_selector(ModPopup::onSupport) },
     }) {
         auto spr = CCSprite::createWithSpriteFrameName(std::get<1>(stat));
@@ -1191,11 +1191,6 @@ void ModPopup::onSettings(CCObject*) {
 }
 
 void ModPopup::onLink(CCObject* sender) {
-    // whoever wrote ModPopup::init needs to be shot in an alleyway because the list initalizer is so restrictive it's not even funny at this point --ery
-    if (static_cast<CCNode*>(sender)->getID() == "discord") {
-        ModPopup::onCommunity(sender);
-        return;
-    }
     auto url = static_cast<CCString*>(static_cast<CCNode*>(sender)->getUserObject("url"));
     web::openLinkInBrowser(url->getCString());
 }
@@ -1204,7 +1199,8 @@ void ModPopup::onSupport(CCObject*) {
     openSupportPopup(m_source.getMetadata());
 }
 void ModPopup::onCommunity(CCObject* sender) {
-    const std::string& url = static_cast<CCString*>(static_cast<CCNode*>(sender)->getUserObject("url"))->getCString();
+    if (!m_source.getMetadata().getLinks().getCommunityURL().has_value()) return;
+    std::string url = m_source.getMetadata().getLinks().getCommunityURL().value();
     if (m_source.asMod() && m_source.asMod()->isInternal()) {
         web::openLinkInBrowser(url);
         return;
@@ -1220,7 +1216,7 @@ void ModPopup::onCommunity(CCObject* sender) {
         "Continue", "Stay", 350.f, [this, url](auto, bool btn2) {
             if (btn2) return;
             web::openLinkInBrowser(url);
-        }, true, true
+        }, true, false
     );
 }
 void ModPopup::onModtober24Info(CCObject*) {
