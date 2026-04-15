@@ -1199,9 +1199,9 @@ void ModPopup::onSupport(CCObject*) {
     openSupportPopup(m_source.getMetadata());
 }
 void ModPopup::onCommunity(CCObject* sender) {
-    auto url = static_cast<CCString*>(static_cast<CCNode*>(sender)->getUserObject("url"));
-    if (m_source.asMod()->isInternal()) {
-        web::openLinkInBrowser(url->getCString());
+    auto url = static_cast<CCString*>(static_cast<CCNode*>(sender)->getUserObject("url"))->getCString();
+    if (m_source.asMod() && m_source.asMod()->isInternal()) {
+        web::openLinkInBrowser(url);
         return;
     }
     createQuickPopup(
@@ -1210,11 +1210,11 @@ void ModPopup::onCommunity(CCObject* sender) {
             "You are about to join <cl>{}</c>, an external community not affiliated "
             "with the Geode Team. <co>Any contents or happenings in this community</c> "
             "<co>do not reflect values held by the Geode Team.</c>",
-            url->getCString()
+            url
         ),
-        "Continue", "Stay", 350.f, [this, earl = url->getCString()](auto, bool btn2) {
+        "Continue", "Stay", 350.f, [this, url](auto, bool btn2) {
             if (btn2) return;
-            web::openLinkInBrowser(earl);
+            web::openLinkInBrowser(url);
         }, true, false
     );
 }
