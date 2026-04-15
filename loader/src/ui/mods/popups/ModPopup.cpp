@@ -1217,7 +1217,7 @@ void ModPopup::onCommunity(CCObject* sender) {
         "Continue", "Stay", 350.f, [this, url](auto, bool btn2) {
             if (btn2) return;
             web::openLinkInBrowser(url);
-        }, true, false
+        }, true, true
     );
 }
 void ModPopup::onModtober24Info(CCObject*) {
