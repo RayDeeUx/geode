@@ -1208,13 +1208,11 @@ void ModPopup::onCommunity(CCObject* sender) {
         "Joining External Community",
         fmt::format(
             "You are about to join <cl>{}</c>, an external community not affiliated "
-            "with the Geode Team. The Geode Team is not responsible for the contents, "
-            "rules, or moderation in this server. <co>Any bans, timeouts, or other forms </c>"
-            "<co>of moderation you may experience in this community does not represent the </c>"
-            "<co>thoughts/opinions of the Geode Team in any capacity.</c>",
+            "with the Geode Team. <co>Any contents or happenings in this community</c> "
+            "<co>do not reflect values held by the Geode Team.</c>",
             url->getCString()
         ),
-        "Yes", "No", 350.f, [earl = geode::Ref(url)](auto, bool btn2) {
+        "Continue", "Stay", 350.f, [earl = geode::Ref(url)](auto, bool btn2) {
             if (btn2) return;
             web::openLinkInBrowser(earl->getCString());
         }, true, false
