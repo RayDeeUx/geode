@@ -1199,8 +1199,9 @@ void ModPopup::onSupport(CCObject*) {
     openSupportPopup(m_source.getMetadata());
 }
 void ModPopup::onCommunity(CCObject* sender) {
-    if (!m_source.getMetadata().getLinks().getCommunityURL().has_value()) return;
-    std::string url = m_source.getMetadata().getLinks().getCommunityURL().value();
+    auto comm = m_source.getMetadata().getLinks().getCommunityURL();
+    if (!comm) return;
+    auto& url = *comm;
     if (m_source.asMod() && m_source.asMod()->isInternal()) {
         web::openLinkInBrowser(url);
         return;
