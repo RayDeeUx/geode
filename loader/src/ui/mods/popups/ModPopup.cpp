@@ -1203,7 +1203,7 @@ void ModPopup::onCommunity(CCObject* sender) {
     if (m_source.asMod()->isInternal()) {
         web::openLinkInBrowser(url->getCString());
         return;
-    }so
+    }
     createQuickPopup(
         "Joining External Community",
         fmt::format(
